@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Project;
 
-class HomeController extends Controller
+class ProjectsController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -21,8 +23,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function list()
     {
-        return view('home');
+        $this->render['projects'] = Project::with('project_type')->get();
+
+        return view('projects.list', $this->render);
     }
 }

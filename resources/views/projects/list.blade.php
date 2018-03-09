@@ -26,14 +26,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            @forelse ($projects as $project)
+                                <tr>
+                                    <td>{{ $project->id }}</td>
+                                    <td>{{ $project->name }}</td>
+                                    <td>{{ $project->end_date }}</td>
+                                    <td>{{ $project->project_type->name }}</td>
+                                    <td>{{ $project->is_web ? "Ano" : "Ne" }}</td>
+                                    <td>
+                                        <a href='' class='btn btn-danger'>Smazat</a>
+                                        <a href='' class='btn btn-primary'>Upravit</a>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan='6'>V systému nejsou žádné projekty!</td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
 

@@ -19,6 +19,7 @@ class CreateProjectsTable extends Migration
             $table->date('end_date');
             $table->integer('project_type')->unsigned();
             $table->foreign('project_type')->references('id')->on('project_types');
+            $table->boolean('is_web')->default(false);
 
             $table->timestamps();
             $table->softDeletes();
