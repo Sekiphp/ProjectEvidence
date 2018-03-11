@@ -36,7 +36,10 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
-                        &nbsp;
+                        @if (Auth::check())
+                          <li><a href="{{ route('project.list') }}">Seznam projektů</a></li>
+                          <li><a href="{{ route('project.new') }}">Nový projekt</a></li>
+                        @endif
                     </ul>
 
                     <!-- Right Side Of Navbar -->
@@ -71,7 +74,23 @@
             </div>
         </nav>
 
-        @yield('content')
+        <div class="container">
+            <div class="row">
+                @if(isset($warning))
+                    <div class="alert alert-danger">
+                        <strong>Upozornění!</strong> {{ $warning }}
+                    </div>
+                @endif
+
+                @if(isset($success))
+                    <div class="alert alert-success">
+                        <strong>Podařilo se!</strong> {{ $success }}
+                    </div>
+                @endif
+
+                @yield('content')
+            </div>
+        </div>
     </div>
 
     <!-- Scripts -->

@@ -21,6 +21,6 @@ class Project extends Model
      * 1:n
      */
     public function project_type() {
-        return $this->hasMany('App\Models\ProjectType');
+        return $this->belongsTo('App\Models\ProjectType', 'project_type');
     }
 }
