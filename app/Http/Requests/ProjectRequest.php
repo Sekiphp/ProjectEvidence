@@ -24,7 +24,20 @@ class ProjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:80'
+            'name' => 'required|max:80',
+            'end_date' => 'date',
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages(){
+        return [
+            'name.required' => 'Jméno projektu musí být vyplněno.',
+            'end_date.date'  => 'Předpokládané datum odevzdání musí být platné datum.',
         ];
     }
 }

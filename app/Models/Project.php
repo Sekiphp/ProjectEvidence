@@ -23,4 +23,8 @@ class Project extends Model
     public function project_type() {
         return $this->belongsTo('App\Models\ProjectType', 'project_type');
     }
+
+    public function scopeWithProjectType($query) {
+        return $query->with('project_type');
+    }
 }

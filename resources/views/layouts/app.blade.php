@@ -38,7 +38,7 @@
                     <ul class="nav navbar-nav">
                         @if (Auth::check())
                           <li><a href="{{ route('project.list') }}">Seznam projektů</a></li>
-                          <li><a href="{{ route('project.new') }}">Nový projekt</a></li>
+                          <li><a href="{{ route('project.new.show') }}">Nový projekt</a></li>
                         @endif
                     </ul>
 
@@ -85,6 +85,17 @@
                 @if(isset($success))
                     <div class="alert alert-success">
                         <strong>Podařilo se!</strong> {{ $success }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <strong>Při validaci formuláře se vyskytly chyby:</strong>
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
 

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProjectRequest;
 use App\Models\Project;
 use App\Models\ProjectType;
 use Illuminate\Http\Request;
-use App\Http\Requests\ProjectRequest;
+use Illuminate\Support\Facades\DB;
 
 class ProjectsController extends Controller
 {
@@ -24,13 +25,22 @@ class ProjectsController extends Controller
 
     /**
      * Seznam projektu
-     *
-     * @return \Illuminate\Http\Response
      */
-    function list() {
-        $this->render['projects'] = Project::with('project_type')->get();
+    public function list() {
+        $this->render['projects'] = DB::table('projects as p')
+            ->join('project_types as pt', 'p.project_type', '=', 'pt.id')
+            ->select("p.*", "pt.name as pt_name")
+            ->get();
+        //$this->render['projects'] = Project::withProjectType()->get();
 
         return view('projects.list', $this->render);
+    }
+
+    public function showNew() {
+        // data do selectboxu
+        $this->render['project_types'] = ProjectType::pluck('name', 'id');
+
+        return view('projects.new', $this->render);
     }
 
     /**
@@ -38,10 +48,7 @@ class ProjectsController extends Controller
      *
      * @param  ProjectRequest $request
      */
-    function new(ProjectRequest $request) {
-        // data do selectboxu
-        $this->render['project_types'] = ProjectType::pluck('name', 'id');
-
+    public function postNew(ProjectRequest $request) {
         // zpracovani formulare
         // $input = $request->all();
         if ($_POST) {
@@ -53,13 +60,12 @@ class ProjectsController extends Controller
 
             if ($project->save()) {
                 $this->render['success'] = "Právě byl založen nový projekt.";
-            }
-            else {
+            } else {
                 $this->render['warning'] = "Projekt se nepodařilo založit!";
             }
         }
 
-        return view('projects.new', $this->render);
+        return redirect('/project/new');
     }
 
     /**
@@ -87,9 +93,29 @@ class ProjectsController extends Controller
      *
      * @param  int    $id ID projektu
      */
-    public function edit(int $id)
+    public function edit(int $id, Request $request)
     {
-        $project = Project::find($id);
+        // zpracovani formulare
+        // $input = $request->all();
+        if ($_POST) {
+            $project = Project::find($id);
+            $project->name = $request->name ?? '';
+            $project->end_date = $request->end_date;
+            $project->project_type = (int) $request->project_type;
+            $project->is_web = (bool) $request->is_web;
 
+            if ($project->save()) {
+                $this->render['success'] = "Projekt byl úspěšně upraven.";
+            } else {
+                $this->render['warning'] = "Nepodařilo se upravit projekt!";
+            }
+        }
+
+        $project = Project::findOrFail($id);
+
+        $this->render['project_types'] = ProjectType::pluck('name', 'id');
+        $this->render['project'] = $project;
+
+        return view('projects.edit', $this->render);
     }
 }
