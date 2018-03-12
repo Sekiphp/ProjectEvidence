@@ -20,11 +20,7 @@ class Project extends Model
     /**
      * 1:n
      */
-    public function project_type() {
+    public function projectType() {
         return $this->belongsTo('App\Models\ProjectType', 'project_type');
-    }
-
-    public function scopeWithProjectType($query) {
-        return $query->with('project_type');
     }
 }

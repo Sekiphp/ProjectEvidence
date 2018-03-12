@@ -33,7 +33,7 @@
                         <td>{{ $project->is_web ? "Ano" : "Ne" }}</td>
                         <td>
                             <a href='{{ route('project.delete.id', ['id' => $project->id]) }}' class='btn btn-danger'>Smazat</a>
-                            <a href='{{ route('project.edit.id', ['id' => $project->id]) }}' class='btn btn-primary'>Upravit</a>
+                            <a href='{{ route('project.edit.show.id', ['id' => $project->id]) }}' class='btn btn-primary'>Upravit</a>
                         </td>
                     </tr>
                     @empty

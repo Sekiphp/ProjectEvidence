@@ -18,7 +18,7 @@
                         </tr>
                         <tr>
                             <th>{{ Form::label('project_type', 'Typ projektu') }}</th>
-                            <td>{{ Form::select('project_type', $project_types, '1') }}</td>
+                            <td>{{ Form::select('project_type', $project_types, $project->projectType->id) }}</td>
                         </tr>
                         <tr>
                             <th>{{ Form::label('is_web', 'Webový projekt?') }}</th>

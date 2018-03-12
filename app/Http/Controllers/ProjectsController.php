@@ -27,11 +27,13 @@ class ProjectsController extends Controller
      * Seznam projektu
      */
     public function list() {
+        /*
         $this->render['projects'] = DB::table('projects as p')
             ->join('project_types as pt', 'p.project_type', '=', 'pt.id')
             ->select("p.*", "pt.name as pt_name")
             ->get();
-        //$this->render['projects'] = Project::withProjectType()->get();
+        */
+        $this->render['projects'] = Project::find(4)->projectType;
 
         return view('projects.list', $this->render);
     }
@@ -88,15 +90,22 @@ class ProjectsController extends Controller
         return self::list();
     }
 
+    public function showEdit(int $id)
+    {
+        $this->render['project'] = Project::find($id);
+        $this->render['project_types'] = ProjectType::pluck('name', 'id');
+
+        return view('projects.edit', $this->render);
+    }
+
     /**
      * Editace projektu
      *
      * @param  int    $id ID projektu
      */
-    public function edit(int $id, Request $request)
+    public function postEdit(ProjectRequest $request, int $id)
     {
         // zpracovani formulare
-        // $input = $request->all();
         if ($_POST) {
             $project = Project::find($id);
             $project->name = $request->name ?? '';
@@ -111,11 +120,6 @@ class ProjectsController extends Controller
             }
         }
 
-        $project = Project::findOrFail($id);
-
-        $this->render['project_types'] = ProjectType::pluck('name', 'id');
-        $this->render['project'] = $project;
-
-        return view('projects.edit', $this->render);
+        return redirect("/project/edit/{$id}");
     }
 }
