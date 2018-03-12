@@ -27,13 +27,7 @@ class ProjectsController extends Controller
      * Seznam projektu
      */
     public function list() {
-        /*
-        $this->render['projects'] = DB::table('projects as p')
-            ->join('project_types as pt', 'p.project_type', '=', 'pt.id')
-            ->select("p.*", "pt.name as pt_name")
-            ->get();
-        */
-        $this->render['projects'] = Project::find(4)->projectType;
+        $this->render['projects'] = Project::all();
 
         return view('projects.list', $this->render);
     }

@@ -29,7 +29,7 @@
                         <td>{{ $project->id }}</td>
                         <td>{{ $project->name }}</td>
                         <td>{{ Carbon\Carbon::parse($project->end_date)->format('j. n. Y') }}</td>
-                        <td>{{ $project->pt_name }}</td>
+                        <td>{{ $project->projectType->name }}</td>
                         <td>{{ $project->is_web ? "Ano" : "Ne" }}</td>
                         <td>
                             <a href='{{ route('project.delete.id', ['id' => $project->id]) }}' class='btn btn-danger'>Smazat</a>
