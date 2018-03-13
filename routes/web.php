@@ -16,6 +16,7 @@ Auth::routes();
 Route::group(['middleware' => 'auth'], function () {
     // seznam projektu
     Route::get('/', 'ProjectsController@getList')->name('project.list');
+    Route::get('/home', 'ProjectsController@getList')->name('project.list');
     Route::get('/project/list', 'ProjectsController@getList')->name('project.list');
 
     // novy projekt
