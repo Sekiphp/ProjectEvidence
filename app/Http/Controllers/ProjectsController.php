@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class ProjectsController extends Controller
 {
+    /** @var array Pole do sablony */
     private $render = [];
 
     /**
@@ -26,13 +27,16 @@ class ProjectsController extends Controller
     /**
      * Seznam projektu
      */
-    public function list() {
+    public function getList() {
         $this->render['projects'] = Project::all();
 
         return view('projects.list', $this->render);
     }
 
-    public function showNew() {
+    /**
+     * Novy projekt
+     */
+    public function getNew() {
         // data do selectboxu
         $this->render['project_types'] = ProjectType::pluck('name', 'id');
 
@@ -40,34 +44,28 @@ class ProjectsController extends Controller
     }
 
     /**
-     * Novy projekt
+     * Novy projekt - POST
      *
-     * @param  ProjectRequest $request
+     * @param  ProjectRequest $request Zajisti validaci formulare
      */
     public function postNew(ProjectRequest $request) {
-        // zpracovani formulare
-        // $input = $request->all();
-        if ($_POST) {
-            $project = new Project();
-            $project->name = $request->name ?? '';
-            $project->end_date = $request->end_date;
-            $project->project_type = (int) $request->project_type;
-            $project->is_web = (bool) $request->is_web;
+        $project = new Project();
+        $project->name = $request->name;
+        $project->end_date = $request->end_date;
+        $project->project_type = (int) $request->project_type;
+        $project->is_web = (bool) $request->is_web;
 
-            if ($project->save()) {
-                $this->render['success'] = "Právě byl založen nový projekt.";
-            } else {
-                $this->render['warning'] = "Projekt se nepodařilo založit!";
-            }
+        if ($project->save()) {
+            return redirect('/project/new')->with('success', "Právě byl založen nový projekt.");
+        } else {
+            return redirect('/project/new')->with('warning', "Projekt se nepodařilo založit!");
         }
-
-        return redirect('/project/new');
     }
 
     /**
      * Smazani projektu
      *
-     * @param  int    $id ID projektu
+     * @param  int $id ID projektu
      */
     public function delete(int $id)
     {
@@ -81,10 +79,15 @@ class ProjectsController extends Controller
             $this->render['warning'] = "nelze smazat projekt protože neexistuje!";
         }
 
-        return self::list();
+        return self::getList();
     }
 
-    public function showEdit(int $id)
+    /**
+     * Zobrazit editaci projektu
+     *
+     * @param  int $id ID projektu
+     */
+    public function getEdit(int $id)
     {
         $this->render['project'] = Project::find($id);
         $this->render['project_types'] = ProjectType::pluck('name', 'id');
@@ -95,25 +98,21 @@ class ProjectsController extends Controller
     /**
      * Editace projektu
      *
-     * @param  int    $id ID projektu
+     * @param  int $id ID projektu
+     * @param  ProjectRequest $request Zajisti validaci formulare
      */
     public function postEdit(ProjectRequest $request, int $id)
     {
-        // zpracovani formulare
-        if ($_POST) {
-            $project = Project::find($id);
-            $project->name = $request->name ?? '';
-            $project->end_date = $request->end_date;
-            $project->project_type = (int) $request->project_type;
-            $project->is_web = (bool) $request->is_web;
+        $project = Project::find($id);
+        $project->name = $request->name ?? '';
+        $project->end_date = $request->end_date;
+        $project->project_type = (int) $request->project_type;
+        $project->is_web = (bool) $request->is_web;
 
-            if ($project->save()) {
-                $this->render['success'] = "Projekt byl úspěšně upraven.";
-            } else {
-                $this->render['warning'] = "Nepodařilo se upravit projekt!";
-            }
+        if ($project->save()) {
+            return redirect("/project/edit/{$id}")->with('success', "Projekt byl úspěšně upraven.");
+        } else {
+            return redirect("/project/edit/{$id}")->with('warning', "Nepodařilo se upravit projekt!");
         }
-
-        return redirect("/project/edit/{$id}");
     }
 }

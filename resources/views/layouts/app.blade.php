@@ -76,21 +76,21 @@
 
         <div class="container">
             <div class="row">
-                @if(isset($warning))
+                @if (isset($warning) || session('warning'))
                     <div class="alert alert-danger">
-                        <strong>Upozornění!</strong> {{ $warning }}
+                        <strong>Upozornění!</strong> {{ $warning ?? '' }} {{ session('warning') ?? '' }}
                     </div>
                 @endif
 
-                @if(isset($success))
+                @if (isset($success) || session('success'))
                     <div class="alert alert-success">
-                        <strong>Podařilo se!</strong> {{ $success }}
+                        <strong>Podařilo se!</strong> {{ $success ?? '' }} {{ session('success') ?? '' }}
                     </div>
                 @endif
 
                 @if ($errors->any())
                     <div class="alert alert-danger">
-                        <strong>Při validaci formuláře se vyskytly chyby:</strong>
+                        <strong>Při validaci formuláře se vyskytly následující chyby:</strong>
                         <ul>
                             @foreach ($errors->all() as $error)
                                 <li>{{ $error }}</li>

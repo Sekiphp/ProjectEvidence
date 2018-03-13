@@ -34,7 +34,8 @@ class ProjectRequest extends FormRequest
      *
      * @return array
      */
-    public function messages(){
+    public function messages()
+    {
         return [
             'name.required' => 'Jméno projektu musí být vyplněno.',
             'end_date.date'  => 'Předpokládané datum odevzdání musí být platné datum.',
