@@ -54,15 +54,15 @@ service apache2 restart
 ```
 V případě, že první příkaz odhalí chyby nepokračujte, dokud tyto chyby nebudou vyřešeny.
 
-5. Vygenerování aplikačního klíče pro Laravel
+5. Přejmenování .evn.example na .env a vyplnění potřebných konfiguračních položek
+
+6. Vygenerování aplikačního klíče pro Laravel
 ```
 php artisan key:generate
 ```
 
-6. Založení databáze
+7. Založení databáze
 Pro správný běh aplikace je třeba založit databázi v phpMyAdminu nebo jiném srovnatelném nástroji, která má porovnání utf8mb4_unicode_ci.
-
-7. Změna přihlašovacích údajů do databáze v souboru .env
 
 8. Výchozí inicializace databáze
 ```
